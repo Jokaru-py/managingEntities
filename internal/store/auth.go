@@ -6,7 +6,8 @@ type ConnStore struct {
 	db *gorm.DB
 }
 
-func (as *ConnStore) GetHeadsDepAgency(id uint) (*[]string, error) {
-
-	return nil, nil
+func NewConnStore(db *gorm.DB) *ConnStore {
+	return &ConnStore{
+		db: db,
+	}
 }
