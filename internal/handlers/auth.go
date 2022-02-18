@@ -23,8 +23,8 @@ func (h *Handler) SignIn(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
 
-	if user != nil {
-		return c.JSON(http.StatusInternalServerError, utils.NewError(errors.New("пользователь уже существует")))
+	if user.Pass == "" {
+		return c.JSON(http.StatusNotFound, utils.NewError(errors.New("пользователь не найден")))
 	}
 
 	err = utils.PasswordCheck(user.Pass, req.Password)
@@ -49,7 +49,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
 
-	if user != nil {
+	if user.Pass != "" {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(errors.New("пользователь уже существует")))
 	}
 
