@@ -1,6 +1,7 @@
 package db
 
 import (
+	"Jokaru-py/managingEntities/models"
 	"fmt"
 	"os"
 
@@ -32,9 +33,10 @@ func New() *gorm.DB {
 	return db
 }
 
-//TODO: err check
+//TODO: проверка на ошибки
 func AutoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
-	// Таблицы с данными агенства
+		&models.UsersDB{},  // Таблицы с данными пользователей
+		&models.ObjectDB{}, // Таблица с данными объектов
 	)
 }

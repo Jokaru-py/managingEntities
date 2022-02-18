@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+    database:
+        image: postgres:13-alpine
+        restart: always
+        env_file:
+            - .env
+        ports:
+            - "8686:5432"
+    server:
+        restart: always
+        build:
+            context: .
+            dockerfile: Dockerfile
+        env_file: .env
+        depends_on:
+            - database
+        networks:
+            - default
+        ports:
+            - "8687:8585"
+volumes:
+    data:

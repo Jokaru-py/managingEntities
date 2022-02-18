@@ -1,6 +1,10 @@
 package main
 
 import (
+	"Jokaru-py/managingEntities/internal/handlers"
+	"Jokaru-py/managingEntities/internal/store"
+	"Jokaru-py/managingEntities/pkg/db"
+	"Jokaru-py/managingEntities/pkg/router"
 	"log"
 
 	"github.com/joho/godotenv"
@@ -14,17 +18,17 @@ func main() {
 		log.Fatalf("Error loading .env file")
 	}
 
-	// r := router.New()
+	r := router.New()
 
-	// v1 := r.Group("/api/estate-agency")
+	v1 := r.Group("/api")
 
-	// d := db.New()
-	// db.AutoMigrate(d)
+	d := db.New()
+	db.AutoMigrate(d)
 
-	// connStore := .NewProfileStore(d)
-	// h := handlers.NewHandler(scs, sms)
+	connStore := store.NewConnStore(d)
+	h := handlers.NewHandler(*connStore)
 
-	// h.Register(v1)
+	h.Register(v1)
 
-	// r.Logger.Fatal(r.Start(":8585"))
+	r.Logger.Fatal(r.Start(":8585"))
 }
