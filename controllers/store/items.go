@@ -3,8 +3,8 @@ package store
 import "Jokaru-py/managingEntities/models"
 
 type Items interface {
-	GetObjectByName(*models.ObjectDB) error
-	GetObjectByID(*models.ObjectDB) error
-	DeleteObjectByID(*models.ObjectDB) error
-	GetAllObjectByID(*models.ObjectDB) ([]*models.ObjectDB, error)
+	GetObjectByName(*models.Object) error
+	GetObjectByID(*models.Object) error
+	DeleteObjectByID(*models.Object) error
+	GetAllObjectByID(*models.Object) ([]*models.Object, error)
 }

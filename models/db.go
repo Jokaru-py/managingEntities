@@ -2,13 +2,15 @@ package models
 
 import "gorm.io/gorm"
 
-type UsersDB struct {
+type Users struct {
 	gorm.Model
-	Login string `gorm:"not null;column:login"` // Логин
-	Pass  string `gorm:"not null;column:pass"`  // Пароль
+	Login  string   `gorm:"not null;column:login"` // Логин
+	Pass   string   `gorm:"not null;column:pass"`  // Пароль
+	Object []Object `gorm:"foreignKey:UserID"`
 }
 
-type ObjectDB struct {
+type Object struct {
 	gorm.Model
-	Name string `gorm:"not null;column:name"` // Название объекта
+	Name   string `gorm:"not null;column:name"` // Название объекта
+	UserID uint
 }

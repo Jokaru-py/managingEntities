@@ -8,13 +8,13 @@ import (
 )
 
 // Создать объект в БД
-func (cs *ConnStore) CreateObject(object *models.ObjectDB) error {
+func (cs *ConnStore) CreateObject(object *models.Object) error {
 	return cs.db.Create(object).Error
 }
 
 // Получить объект в БД
-func (cs *ConnStore) GetObjectByName(object *models.ObjectDB) (*models.ObjectDB, error) {
-	var obj models.ObjectDB
+func (cs *ConnStore) GetObjectByName(object *models.Object) (*models.Object, error) {
+	var obj models.Object
 	err := cs.db.Where("name = ?", object.Name).Take(&obj).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -27,8 +27,8 @@ func (cs *ConnStore) GetObjectByName(object *models.ObjectDB) (*models.ObjectDB,
 }
 
 // Получить объект в БД по ID
-func (cs *ConnStore) GetObjectByID(object *models.ObjectDB) (*models.ObjectDB, error) {
-	var obj models.ObjectDB
+func (cs *ConnStore) GetObjectByID(object *models.Object) (*models.Object, error) {
+	var obj models.Object
 	err := cs.db.Where("id = ?", object.ID).Take(&obj).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -41,14 +41,14 @@ func (cs *ConnStore) GetObjectByID(object *models.ObjectDB) (*models.ObjectDB, e
 }
 
 // Получить объект в БД по ID
-func (cs *ConnStore) DeleteObjectByID(object *models.ObjectDB) error {
+func (cs *ConnStore) DeleteObjectByID(object *models.Object) error {
 	return cs.db.Delete(object).Where("id = ", object.ID).Error
 }
 
 // Получить все объекты
-func (cs *ConnStore) GetAllObjectByID(*models.ObjectDB) ([]*models.ObjectDB, error) {
-	var res []*models.ObjectDB
-	err := cs.db.Find(&res).Error
+func (cs *ConnStore) GetAllObjectByID(params *models.Object) ([]*models.Object, error) {
+	var res []*models.Object
+	err := cs.db.Where("user_id = ?", params.UserID).Find(&res).Error
 	if err != nil {
 		return nil, err
 	}

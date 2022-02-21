@@ -17,8 +17,8 @@ func NewConnStore(db *gorm.DB) *ConnStore {
 }
 
 // Поиск user по логину
-func (cs *ConnStore) GetUser(login string) (*models.UsersDB, error) {
-	var res models.UsersDB
+func (cs *ConnStore) GetUser(login string) (*models.Users, error) {
+	var res models.Users
 	err := cs.db.Where("login = ?", login).Find(&res).Error
 	if err != nil {
 		return nil, err
@@ -28,6 +28,6 @@ func (cs *ConnStore) GetUser(login string) (*models.UsersDB, error) {
 }
 
 // Создать пользователя в БД
-func (cs *ConnStore) CreateUser(user *models.UsersDB) error {
+func (cs *ConnStore) CreateUser(user *models.Users) error {
 	return cs.db.Create(user).Error
 }

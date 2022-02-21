@@ -59,7 +59,7 @@ func (h *Handler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
 
-	err = h.connStore.CreateUser(&models.UsersDB{Login: req.Login, Pass: hashPass})
+	err = h.connStore.CreateUser(&models.Users{Login: req.Login, Pass: hashPass})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}

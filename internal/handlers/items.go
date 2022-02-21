@@ -19,8 +19,11 @@ func (h *Handler) CreateObject(c echo.Context) error {
 		return c.JSON(http.StatusUnprocessableEntity, utils.NewError(err))
 	}
 
+	// ID из токена
+	idUser := c.Get("user").(uint)
+
 	// Проверить есть ли такой объект
-	obj, err := h.connStore.GetObjectByName(&models.ObjectDB{Name: req.Name})
+	obj, err := h.connStore.GetObjectByName(&models.Object{Name: req.Name})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
@@ -29,13 +32,13 @@ func (h *Handler) CreateObject(c echo.Context) error {
 	}
 
 	// Создать
-	err = h.connStore.CreateObject(&models.ObjectDB{Name: req.Name})
+	err = h.connStore.CreateObject(&models.Object{Name: req.Name, UserID: idUser})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
 
 	// Получить
-	obj, err = h.connStore.GetObjectByName(&models.ObjectDB{Name: req.Name})
+	obj, err = h.connStore.GetObjectByName(&models.Object{Name: req.Name, UserID: idUser})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
@@ -50,6 +53,7 @@ func (h *Handler) CreateObject(c echo.Context) error {
 }
 
 // Удалить объекта
+// TODO: проверку пользователя
 func (h *Handler) DeleteObject(c echo.Context) error {
 	idParam := c.Param("id")
 
@@ -59,7 +63,7 @@ func (h *Handler) DeleteObject(c echo.Context) error {
 	}
 
 	// Проверить есть ли такой объект
-	obj, err := h.connStore.GetObjectByID(&models.ObjectDB{Model: gorm.Model{ID: uint(id)}})
+	obj, err := h.connStore.GetObjectByID(&models.Object{Model: gorm.Model{ID: uint(id)}})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
@@ -67,7 +71,7 @@ func (h *Handler) DeleteObject(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, utils.NewError(errors.New("объект с таким ID не найден")))
 	}
 
-	err = h.connStore.DeleteObjectByID(&models.ObjectDB{Model: gorm.Model{ID: uint(id)}})
+	err = h.connStore.DeleteObjectByID(&models.Object{Model: gorm.Model{ID: uint(id)}})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}
@@ -75,10 +79,13 @@ func (h *Handler) DeleteObject(c echo.Context) error {
 	return c.JSON(http.StatusOK, nil)
 }
 
-// Получить все объекты
+// Получить все объекты пользователя
 func (h *Handler) GetObject(c echo.Context) error {
 
-	res, err := h.connStore.GetAllObjectByID(&models.ObjectDB{Name: "1"})
+	// ID из токена
+	idUser := c.Get("user").(uint)
+
+	res, err := h.connStore.GetAllObjectByID(&models.Object{UserID: idUser})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, utils.NewError(err))
 	}

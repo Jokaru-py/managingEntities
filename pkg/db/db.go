@@ -36,7 +36,7 @@ func New() *gorm.DB {
 //TODO: проверка на ошибки
 func AutoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
-		&models.UsersDB{},  // Таблицы с данными пользователей
-		&models.ObjectDB{}, // Таблица с данными объектов
+		&models.Users{},  // Таблицы с данными пользователей
+		&models.Object{}, // Таблица с данными объектов
 	)
 }
