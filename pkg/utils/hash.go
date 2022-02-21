@@ -17,3 +17,21 @@ func HashPassword(plain string) (string, error) {
 func PasswordCheck(dbPass string, tekPass string) error {
 	return bcrypt.CompareHashAndPassword([]byte(dbPass), []byte(tekPass))
 }
+
+func EndcodeLink(str string) string {
+	var result string
+	for _, value := range str {
+		result += string(value - 1)
+	}
+
+	return result
+}
+
+func DecodeLink(str string) string {
+	var result string
+	for _, value := range str {
+		result += string(value + 1)
+	}
+
+	return result
+}

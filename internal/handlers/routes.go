@@ -22,6 +22,6 @@ func (h *Handler) Register(v1 *echo.Group) {
 	items.GET("", h.GetObject)           // Получить объект
 
 	//
-	// v1.POST("/send")  // Генерация ссылки для передачи объекта
-	// v1.GET("/get") // Переход по ссылке для получения объекта
+	v1.POST("/send", h.SendObject, jwtMiddleware)  // Генерация ссылки для передачи объекта
+	v1.GET("/:get", h.GetNewObject, jwtMiddleware) // Переход по ссылке для получения объекта
 }

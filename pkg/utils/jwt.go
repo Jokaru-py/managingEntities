@@ -16,3 +16,12 @@ func GenerateJWT(id uint) string {
 	t, _ := token.SignedString(JWTSecret)
 	return t
 }
+
+func GenerateLink(login string, id uint) string {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["id"] = id
+	claims["login"] = login
+	t, _ := token.SignedString(JWTSecret)
+	return t
+}
